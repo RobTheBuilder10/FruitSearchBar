@@ -1,149 +1,66 @@
-// Assume we have a predefined list of fruits
+// JavaScript code for the X-Treme Fruit Search Bar
+
+// List of fruits for the autofill functionality
 const fruits = [
-    "Apple",
-    "Apricot",
-    "Avocado",
-    "Banana",
-    "Blackberry",
-    "Blueberry",
-    "Boysenberry",
-    "Cantaloupe",
-    "Cherimoya",
-    "Cherry",
-    "Clementine",
-    "Coconut",
-    "Cranberry",
-    "Date",
-    "Dragonfruit",
-    "Durian",
+    "Apple", "Apricot", "Avocado",
+    "Banana", "Blackberry", "Blueberry", "Boysenberry",
+    "Cherry", "Coconut", "Cranberry", "Custard Apple",
+    "Date", "Dragonfruit", "Durian",
     "Elderberry",
-    "Feijoa",
-    "Fig",
-    "Grape",
-    "Grapefruit",
-    "Guava",
+    "Feijoa", "Fig",
+    "Grape", "Grapefruit", "Guava",
     "Honeydew",
     "Jackfruit",
-    "Kiwifruit",
-    "Kumquat",
-    "Lemon",
-    "Lime",
-    "Lychee",
-    "Mango",
-    "Mangosteen",
-    "Melon",
-    "Mulberry",
+    "Kiwi", "Kumquat",
+    "Lemon", "Lime", "Lychee",
+    "Mango", "Melon", "Mulberry",
     "Nectarine",
     "Orange",
-    "Papaya",
-    "Passionfruit",
-    "Peach",
-    "Pear",
-    "Persimmon",
-    "Pineapple",
-    "Plum",
-    "Pomegranate",
-    "Pomelo",
-    "Quince",
-    "Raspberry",
-    "Redcurrant",
-    "Starfruit",
+    "Papaya", "Peach", "Pear", "Persimmon", "Pineapple", "Plum", "Pomegranate",
+    "Raspberry", "Red Currant",
     "Strawberry",
-    "Tangerine",
-    "Ugli fruit",
+    "Tangerine", "Tomato",
+    "Ugli Fruit",
     "Watermelon"
   ];
   
-document.addEventListener("DOMContentLoaded", () => {
-    const searchBar = document.getElementById("search-bar");
-    const searchResults = document.getElementById("search-results");
-    const searchButton = document.getElementById("search-button");
-    const clearButton = document.getElementById("clear-button");
-});
-
-    searchBar.addEventListener("keyup", () => {
-        const searchValue = searchBar.value.toLowerCase();
-        const filteredFruits = fruits.filter(fruit => fruit.toLowerCase().includes(searchValue));
-        searchResults.innerHTML = "";
-        filteredFruits.forEach(fruit => {
-            const fruitItem = document.createElement("li");
-            fruitItem.innerText = fruit;
-            searchResults.appendChild(fruitItem);
-        });
-    });
-
-function search(inputText) {
-    let results = {};
-    if (inputText.length > 0) {
-        results = fruits.filter(fruit => fruit.toLowerCase().includes(inputText.toLowerCase()));
-        displayResults(results);
+  // The search function filters the fruit list based on the user's input
+  function search() {
+    let input = document.getElementById('search-bar').value.toLowerCase();
+    let suggestionsBox = document.getElementById('suggestions-box');
+  
+    // Clear previous suggestions
+    suggestionsBox.innerHTML = '';
+  
+    // Filter the fruits array
+    let results = fruits.filter(fruit =>
+      fruit.toLowerCase().includes(input)
+    );
+  
+    // Generate the suggestions list
+    for (let i = 0; i < results.length; i++) {
+      let div = document.createElement('div');
+      div.innerHTML = results[i];
+      div.classList.add('suggestion');
+      div.onclick = function() {
+        document.getElementById('search-bar').value = this.innerHTML;
+        suggestionsBox.innerHTML = '';
+      };
+      div.onmouseover = function() {
+        this.classList.add('highlight');
+      };
+      div.onmouseout = function() {
+        this.classList.remove('highlight');
+      };
+      suggestionsBox.appendChild(div);
     }
-
-if (inputText.length > 0) {
-    results = fruits.filter(fruit => fruit.toLowerCase().includes(inputText.toLowerCase()));
-    displayResults(results);
-} else {
-    displayResults([]);
-}
-
-function displayResults(results) {
-    const suggestionsBox = document.getElementById("search-results");
-    suggestionsBox.innerHTML = "";
-    results.forEach(fruit => {
-        const suggestion = document.createElement('div');
-        suggestion.textContent = result;
-        suggestion.classList.add('suggestion');
-        suggestionsBox.addEventListener('mouseover', highlightSuggestion);
-        suggestionsBox.addEventListener('click', () => useSuggestion(result));
-        suggestionsBox.appendChild(suggestion);
-    });
-}
-
-function highlightSuggestion(event) {
-    const suggestions = Array.from(event.currentTarget.children);
-    suggestions.forEach(suggestion => suggestion.classList.remove('highlight'));
-    event.target.classList.add('highlight');
-}
-
-function useSuggestion(result) {
-    searchBar.value = result;
-    searchBar.focus();
-    displayResults([]);
-}
-function displayResults(results) {
-    const suggestionsBox = document.getElementById("search-results");
-    suggestionsBox.innerHTML = "";
-    results.forEach(fruit => {
-        const suggestion = document.createElement('div');
-        suggestion.textContent = fruit;
-        suggestion.classList.add('suggestion');
-        suggestionsBox.addEventListener('mouseover', highlightSuggestion);
-        suggestionsBox.addEventListener('click', () => useSuggestion(fruit));
-        suggestionsBox.appendChild(suggestion);
-    });
-}
-
-function highlightSuggestion(event) {
-    const suggestions = Array.from(event.currentTarget.children);
-    suggestions.forEach(suggestion => suggestion.classList.remove('highlight'));
-    event.target.classList.add('highlight');
-}
-
-function displayResults(results) {
-    const suggestionsBox = document.getElementById("search-results");
-    suggestionsBox.innerHTML = "";
-    results.forEach(fruit => {
-        const suggestion = document.createElement('div');
-        suggestion.textContent = fruit;
-        suggestion.classList.add('suggestion');
-        suggestionsBox.addEventListener('mouseover', highlightSuggestion);
-        suggestionsBox.addEventListener('click', () => useSuggestion(fruit));
-        suggestionsBox.appendChild(suggestion);
-    });
-}
-
-function highlightSuggestion(event) {
-    const suggestions = Array.from(event.currentTarget.children);
-    suggestions.forEach(suggestion => suggestion.classList.remove('highlight'));
-    event.target.classList.add('highlight');
-}
+  
+    // Hide the suggestion box if the search bar is empty
+    if (input === '') {
+      suggestionsBox.innerHTML = '';
+    }
+  }
+  
+  // Add event listener for the search bar input
+  document.getElementById('search-bar').addEventListener('input', search);
+  
